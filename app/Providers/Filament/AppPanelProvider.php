@@ -2,12 +2,14 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\App\Pages\EditProfile;
 use App\Filament\App\Pages\RegisterTeam;
 use App\Filament\Pages\Auth\Login;
 use App\Models\Team;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -29,6 +31,10 @@ class AppPanelProvider extends PanelProvider
             ->registration()
             ->passwordReset()
             ->emailVerification()
+            ->profile(EditProfile::class)
+            ->userMenuItems([
+                'profile' => MenuItem::make()->url(fn (): string => EditProfile::getUrl())
+            ])
             ->tenant(Team::class)
             ->tenantRegistration(RegisterTeam::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
